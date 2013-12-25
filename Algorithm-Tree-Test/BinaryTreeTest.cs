@@ -204,5 +204,50 @@ namespace Algorithm_Tree_Test
         {
             InorderTraversalTestHelper<GenericParameterHelper>();
         }
+
+        /// <summary>
+        ///A test for CommonAncerstorProvedSolutionThree
+        ///</summary>
+        public void CommonAncerstorProvedSolutionThreeTestHelper<T>()
+        {
+            BinaryTree<int> target = new BinaryTree<int>(); // TODO: Initialize to an appropriate value
+
+            int[] data = new int[7];
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                data[i] = i + 1;
+            }
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                target.Add(data[i]);
+            }
+
+
+            TreeNode<int> root = target.root; // TODO: Initialize to an appropriate value
+
+            // case 1: two notes in the same subtree
+
+            //TreeNode<int> p = target.root.left.right.left ; // TODO: Initialize to an appropriate value
+            //TreeNode<int> q = target.root.left; // TODO: Initialize to an appropriate value
+
+
+            // case 2 :two notes in the differet subtree
+            TreeNode<int> p = target.root.left.left; // TODO: Initialize to an appropriate value
+            TreeNode<int> q = target.root.right.right; // TODO: Initialize to an appropriate value
+
+            TreeNode<int> expected = target.root; // TODO: Initialize to an appropriate value
+
+            TreeNode<int> actual = target.CommonAncerstorProvedSolutionThree(root, p, q);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod()]
+        public void CommonAncerstorProvedSolutionThreeTest()
+        {
+            CommonAncerstorProvedSolutionThreeTestHelper<GenericParameterHelper>();
+        }
     }
 }

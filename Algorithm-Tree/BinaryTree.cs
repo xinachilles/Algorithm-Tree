@@ -188,7 +188,7 @@ namespace ClassLibrary.Tree
 
         }
 
-        #region 4.1
+           #region 4.1
         //4.1 Implement a function to check if a binary tree is balanced. For the purposes of
         //this question, a balanced tree is defined to be a tree such that the heights of the
         //two subtrees of any node never differ by more than one.
@@ -212,7 +212,7 @@ namespace ClassLibrary.Tree
                 return IsBalanced(node.left) && IsBalanced(node.right);
             }
         }
-
+        // second solution 
        int checkHeight(TreeNode<T> root)
         {
             if (root == null)
