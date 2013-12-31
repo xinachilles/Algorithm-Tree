@@ -104,5 +104,22 @@ namespace Algorithm_Tree_Test
             Assert.AreEqual(expected, actual);
           
         }
+
+        /// <summary>
+        ///A test for CreateMinimalBST
+        ///</summary>
+        [TestMethod()]
+        public void CreateMinimalBSTTest()
+        {
+            BinarySearchTree target = new BinarySearchTree(); // TODO: Initialize to an appropriate value
+            int[] arrj = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+            int start = 0; // TODO: Initialize to an appropriate value
+            int end = 8; // TODO: Initialize to an appropriate value
+            TreeNode<int> expected = null; // TODO: Initialize to an appropriate value
+            TreeNode<int> actual;
+            actual = target.CreateMinimalBST(arrj, start, end);
+            Assert.AreEqual(expected, actual);
+           
+        }
     }
 }

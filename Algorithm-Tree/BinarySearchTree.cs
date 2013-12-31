@@ -225,7 +225,7 @@ namespace ClassLibrary.Tree
         //to create a binary search tree with minimal height.
 
 
-        public TreeNode<int> createMinimalBST(int[] arrj, int start, int end)
+        public TreeNode<int> CreateMinimalBST(int[] arrj, int start, int end)
         {
             if (end < start)
             {
@@ -234,8 +234,8 @@ namespace ClassLibrary.Tree
             int mid = (start + end) / 2;
             TreeNode<int> n = new TreeNode<int>(arrj[mid]);
 
-            n.left = createMinimalBST(arrj, start, mid - 1);
-            n.right = createMinimalBST(arrj, mid + 1, end);
+            n.left = CreateMinimalBST(arrj, start, mid - 1);
+            n.right = CreateMinimalBST(arrj, mid + 1, end);
             return n;
         }
         #endregion
