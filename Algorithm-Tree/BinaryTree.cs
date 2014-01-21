@@ -15,6 +15,7 @@ namespace ClassLibrary.Tree
         public TreeNode<T> left;
         public TreeNode<T> right;
         public TreeNode<T> parent;
+        public int height;
         public TreeNode() { }
         public TreeNode(T value)
         {
@@ -39,8 +40,19 @@ namespace ClassLibrary.Tree
 
 
     }
-    public class BinaryTree<T>
+    public class BinaryTree<T> : IEnumerable<TreeNode<T>>
     {
+        public IEnumerator<TreeNode<T>> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+
 
         public TreeNode<T> root;
 
@@ -138,7 +150,7 @@ namespace ClassLibrary.Tree
         }
 
 
- // create binary tree for testing 
+        // create binary tree for testing 
         public void Add(T data)
         {
 
@@ -188,17 +200,17 @@ namespace ClassLibrary.Tree
 
         }
 
-           #region 4.1
+        #region 4.1
         //4.1 Implement a function to check if a binary tree is balanced. For the purposes of
         //this question, a balanced tree is defined to be a tree such that the heights of the
         //two subtrees of any node never differ by more than one.
-        public int getHeight(TreeNode<T> node)
+        public int getHeight(TreeNode<int> node)
         {
             if (node == null) return 0; // Base case
             return Math.Max(getHeight(node.left), getHeight(node.right)) + 1;
         }
 
-        public bool IsBalanced(TreeNode<T> node)
+        public bool IsBalanced(TreeNode<int> node)
         {
             if (node == null) return true; // Base case
             int heightDiff = getHeight(node.left) - getHeight(node.right);
@@ -213,7 +225,7 @@ namespace ClassLibrary.Tree
             }
         }
         // second solution 
-       int checkHeight(TreeNode<T> root)
+        int checkHeight(TreeNode<T> root)
         {
             if (root == null)
             {
@@ -302,7 +314,7 @@ namespace ClassLibrary.Tree
         //4.4 Given a binary tree, design an algorithm which creates a linked list of all the nodes at
         //each depth (e.g., if you have a tree with depth D, you'll have D linked lists).
 
-      public void CreateLevelLinkedList(TreeNode<T> root, List<List<TreeNode<T>>> lists, int level)
+        public void CreateLevelLinkedList(TreeNode<T> root, List<List<TreeNode<T>>> lists, int level)
         {
             if (root == null) return; // base case
 
@@ -335,7 +347,7 @@ namespace ClassLibrary.Tree
 
 
 
-      public List<List<TreeNode<T>>> CreateLevellinkedListTwo(TreeNode<T> root)
+        public List<List<TreeNode<T>>> CreateLevellinkedListTwo(TreeNode<T> root)
         {
             List<List<TreeNode<T>>> result = new List<List<TreeNode<T>>>();
             /* "Visit" the root */
@@ -375,7 +387,7 @@ namespace ClassLibrary.Tree
         // we must assume the tree don`t have duplicate value 
 
         public int index = 0;
-      
+
 
         private void CopyBST(TreeNode<int> root, ref int[] array)
         {
@@ -402,7 +414,7 @@ namespace ClassLibrary.Tree
         }
 
         // 4.5 second way that we remove the uncessary array 
-        public  int last_printed_value = int.MinValue;
+        public int last_printed_value = int.MinValue;
 
         public bool CheckBST(TreeNode<int> root)
         {
@@ -425,7 +437,7 @@ namespace ClassLibrary.Tree
 
 
         // solution 3  
-        
+
         public bool CheckBST(TreeNode<int> node, int min, int max)
         {
             if (root == null) return true;
@@ -451,7 +463,7 @@ namespace ClassLibrary.Tree
         //in a binary tree. Avoid storing additional nodes in a data structure. NOTE: This is not
         //necessarily a binary search tree.
 
-       // solution 2 : 
+        // solution 2 : 
         public TreeNode<T> CommonAncerstorSoultionTwo(TreeNode<T> root, TreeNode<T> p, TreeNode<T> q)
         {
             // error check 
@@ -487,22 +499,22 @@ namespace ClassLibrary.Tree
         }
 
 
-// solution #3
- 
-    // Although the Solution #2 is optimal in its runtime, we may recognize that there is still
-    // some inefficiency in how it operates. Specifically, covers searches all nodes under root
-    // for p and q, including the nodes in each subtree (root. left and root. right).Then, it
-    // picks one of those subtrees and searches all of its nodes. Each subtree is searched over
-    //  and over again.
-    // We may recognize that we should only need to search the entire tree once to find p and
-    //q. We should then be able to "bubble up" the findings to earlier nodes in the stack. The
-    //basic logic is the same as the earlier solution.
-    //We recurse through the entire tree with a function called commonAncestor(TreeNode
-    //root, TreeNode p, TreeNode q).This function returns values as follows:
-    //• Returns p, if root's subtree includes p (and not q).
-    //• Returns q, if root's subtree includes q (and not p).
-    //• Returns null, if neither p nor q are in root's subtree.
-    //• Else, returns the common ancestor of p and q.
+        // solution #3
+
+        // Although the Solution #2 is optimal in its runtime, we may recognize that there is still
+        // some inefficiency in how it operates. Specifically, covers searches all nodes under root
+        // for p and q, including the nodes in each subtree (root. left and root. right).Then, it
+        // picks one of those subtrees and searches all of its nodes. Each subtree is searched over
+        //  and over again.
+        // We may recognize that we should only need to search the entire tree once to find p and
+        //q. We should then be able to "bubble up" the findings to earlier nodes in the stack. The
+        //basic logic is the same as the earlier solution.
+        //We recurse through the entire tree with a function called commonAncestor(TreeNode
+        //root, TreeNode p, TreeNode q).This function returns values as follows:
+        //• Returns p, if root's subtree includes p (and not q).
+        //• Returns q, if root's subtree includes q (and not p).
+        //• Returns null, if neither p nor q are in root's subtree.
+        //• Else, returns the common ancestor of p and q.
         public class result
         {
             public TreeNode<T> node;

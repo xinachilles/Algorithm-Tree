@@ -71,7 +71,7 @@ namespace Algorithm_Tree_Test
         [DeploymentItem("Algorithm-Tree.dll")]
         public void InorderSuccTest()
         {
-            BinarySearchTree_Accessor target = new BinarySearchTree_Accessor(); // TODO: Initialize to an appropriate value
+            BinarySearchTree_Accessor<int> target = new BinarySearchTree_Accessor<int>(); // TODO: Initialize to an appropriate value
             target.root = new TreeNode<int>(0);
 
             target.root.left = new TreeNode<int>(1);
@@ -111,7 +111,7 @@ namespace Algorithm_Tree_Test
         [TestMethod()]
         public void CreateMinimalBSTTest()
         {
-            BinarySearchTree target = new BinarySearchTree(); // TODO: Initialize to an appropriate value
+            BinarySearchTree<int> target = new BinarySearchTree<int>(); // TODO: Initialize to an appropriate value
             int[] arrj = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
             int start = 0; // TODO: Initialize to an appropriate value
             int end = 8; // TODO: Initialize to an appropriate value

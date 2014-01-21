@@ -8,20 +8,20 @@ namespace ClassLibrary.Tree
 {
 
 
-    class BinarySearchTree : BinaryTree<int>
+   public class BinarySearchTree<T> : BinaryTree<T> where T: IComparable<T>
     {
 
 
         private int count;
 
 
-        public TreeNode<int> TreeSearch(TreeNode<int> x, int k)
+        public TreeNode<T> TreeSearch(TreeNode<T> x, T k)
         {
-            if ((x == null) || (k == (x.Value)))
+            if ((x == null) || (x.Value.CompareTo(k)==0))
             {
                 return x;
             }
-            else if (k < x.Value)
+            else if (x.Value.CompareTo(k) == 1)
             {
                 return TreeSearch(x.left, k);
 
@@ -57,27 +57,27 @@ namespace ClassLibrary.Tree
         }
 
 
-        public new void Add(int data)
+        public new void Insert(T data)
         {
             // create a new Node instance
-            TreeNode<int> n = new TreeNode<int>(data);
+            TreeNode<T> n = new TreeNode<T>(data);
             // now, insert n into the tree
             // trace down the tree until we hit a NULL
-            TreeNode<int> current = root, parent = null;
+            TreeNode<T> current = root, parent = null;
             while (current != null)
             {
                  
-                if (current.Value == data)
+                if (current.Value.CompareTo(data)== 0)
                     // they are equal - attempting to enter a duplicate - do nothing
                     return;
-                else if (current.Value > data)
+                else if (current.Value.CompareTo(data) ==1)
                 {
                     // current.Value > data, must add n to current's left subtree
                     parent = current;
                     current = current.left;
                    
                 }
-                else if (current.Value < data)
+                else if (current.Value.CompareTo(data) == -1)
                 {
                     // current.Value < data, must add n to current's right subtree
                     parent = current;
@@ -96,7 +96,7 @@ namespace ClassLibrary.Tree
             else
             {
 
-                if (parent.Value > data)
+                if (parent.Value.CompareTo(data) ==1)
                     // parent.Value > data, therefore n must be added to the left subtree
                     parent.left = n;
                     
@@ -185,7 +185,7 @@ namespace ClassLibrary.Tree
         }
 
         // determin if the t2 is sub-tree
-        public bool containsTree(TreeNode<int> t1)
+        public bool containsTree(TreeNode<int> t1, TreeNode<int> root)
         {
             if (t1 == null) { return true; }
 
