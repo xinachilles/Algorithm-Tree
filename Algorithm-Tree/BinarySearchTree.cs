@@ -57,7 +57,7 @@ namespace ClassLibrary.Tree
         }
 
 
-        public new void Insert(T data)
+        public new TreeNode<T> Insert(T data)
         {
             // create a new Node instance
             TreeNode<T> n = new TreeNode<T>(data);
@@ -69,7 +69,7 @@ namespace ClassLibrary.Tree
                  
                 if (current.Value.CompareTo(data)== 0)
                     // they are equal - attempting to enter a duplicate - do nothing
-                    return;
+                    return null;
                 else if (current.Value.CompareTo(data) ==1)
                 {
                     // current.Value > data, must add n to current's left subtree
@@ -105,7 +105,9 @@ namespace ClassLibrary.Tree
                     parent.right = n;
             }
 
-            n.parent = parent; 
+            n.parent = parent;
+
+            return n;
         }
 
 

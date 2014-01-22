@@ -33,7 +33,7 @@ namespace ClassLibrary.Tree
             this.root = null;
         }
 
-        public void Rebalance(TreeNode<T> node)
+        private void Rebalance(TreeNode<T> node)
        {
         while (node!=null)
 	{
@@ -84,6 +84,7 @@ namespace ClassLibrary.Tree
                 {
                     y.parent.right = y;
                 }
+            }
                 x.right = y.left;
                 if (x.right != null)
                 {
@@ -93,14 +94,6 @@ namespace ClassLibrary.Tree
                 x.parent = y;
                 UpdateHeight(x);
                 UpdateHeight(y);
-
-
-            }
-
-
-
-
-
 
         }
         private void RightRotate(TreeNode<T> x)
@@ -131,6 +124,12 @@ namespace ClassLibrary.Tree
                 UpdateHeight(x);
                 UpdateHeight(y);
             }
+        }
+
+        public new void Insert(T data) {
+        TreeNode<T> n = base.Insert(data);
+        Rebalance(n);
+        
         }
     }
 }

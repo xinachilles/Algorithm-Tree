@@ -71,14 +71,10 @@ namespace Algorithm_Tree_Test
         {
             AVLTree<int> target = new AVLTree<int>(); // TODO: Initialize to an appropriate value
                   
-            target.Insert(10);
-            target.Insert(5);
-            target.Insert(13);
-            target.Insert(4);
-            target.Insert(6);
-            target.Insert(17);
-            target.Insert(3);
+            target.Insert(1);
             target.Insert(2);
+            target.Insert(3);
+            
 
             
             
