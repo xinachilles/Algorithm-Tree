@@ -204,11 +204,38 @@ namespace ClassLibrary.Tree
         //4.1 Implement a function to check if a binary tree is balanced. For the purposes of
         //this question, a balanced tree is defined to be a tree such that the heights of the
         //two subtrees of any node never differ by more than one.
+        int d = 0;
+        int num = 0;
+        
+        public int getHeight(TreeNode<int> node, ref int[] dep)
+        {
+            if (node == null) return 0; // Base case
+            int d =  Math.Max(getHeight(node.left, ref dep), getHeight(node.right,ref dep)) + 1;
+            dep[num++] = d;
+            return d; 
+            
+        }
+
+       
+        public void getDepth(TreeNode<int> head, ref int[] dep)
+        {
+            if (head == null) return;
+            ++d;
+            getDepth(head.left, ref dep);
+            if (head.left == null && head.right == null)
+                dep[num++] = d;
+            getDepth(head.right, ref dep);
+            --d;
+        }
+
+
         public int getHeight(TreeNode<int> node)
         {
             if (node == null) return 0; // Base case
-            return Math.Max(getHeight(node.left), getHeight(node.right)) + 1;
+            return  Math.Max(getHeight(node.left), getHeight(node.right)) + 1;
+            
         }
+
 
         public bool IsBalanced(TreeNode<int> node)
         {
@@ -324,8 +351,8 @@ namespace ClassLibrary.Tree
                 list = new List<TreeNode<T>>();
                 /* Levels are always traversed in order. So., if this is the
                 * first time we've visited level i, we must have seen levels
-                10 * 0 through i - 1. We can therefore safely add the level at
-                II * the end. */
+                * 0 through i - 1. We can therefore safely add the level at
+                * the end. */
                 lists.Add(list);
             }
             else
@@ -445,7 +472,7 @@ namespace ClassLibrary.Tree
             // check current value 
             if (node.Value > max || node.Value <= min) { return false; }
 
-            if (!CheckBST(node.left, min, node.Value) || !CheckBST(node.right, node.Value, min))
+            if (!CheckBST(node.left, min, node.Value) || !CheckBST(node.right, node.Value, max))
             {
                 return false;
 
