@@ -57,7 +57,7 @@ namespace ClassLibrary.Tree
         }
 
 
-        public new TreeNode<T> Insert(T data)
+        public TreeNode<T> Insert(T data)
         {
             // create a new Node instance
             TreeNode<T> n = new TreeNode<T>(data);
@@ -136,7 +136,7 @@ namespace ClassLibrary.Tree
         // create binary tree 
 
         #region 4.9
-        // You are given a binary tree in which each node contains a value. Design an algorithm
+        // You are given a biwnary tree in which each node contains a value. Design an algorithm
         // to print all paths which sum to a given value. The path does not need to start
         // or end at the root or a leaf.
 
@@ -183,39 +183,6 @@ namespace ClassLibrary.Tree
             {
                 Console.WriteLine("the index is :{0}, the value is: {1}", i, path[i].Value);
             }
-
-        }
-
-        // determin if the t2 is sub-tree
-        public bool containsTree(TreeNode<int> t1, TreeNode<int> root)
-        {
-            if (t1 == null) { return true; }
-
-            return subTree(root, t1);
-
-        }
-
-        private bool subTree(TreeNode<int> t1, TreeNode<int> t2)
-        {
-            if (t1 == null) return false;
-
-            if (t1.Value == t2.Value)
-            {
-                if (matchTree(t1, t2)) { return true; }
-
-            }
-
-            return (subTree(t1.left, t2) || subTree(t1.right, t2));
-        }
-
-        private bool matchTree(TreeNode<int> t1, TreeNode<int> t2)
-        {
-            if ((t1 == null) && (t2 == null))
-            { return true; }
-
-            if (t1.Value != t2.Value) return false;
-
-            return (matchTree(t1.left, t2.left) && matchTree(t1.right, t2.right));
 
         }
 
@@ -267,18 +234,24 @@ namespace ClassLibrary.Tree
                 
                // Go up until we're on left instead of right
 
-                //1. We need to pick up where we left off with n's parent, which we'll call "parent".
-                //   If n was to the left of "parent", then the next node we should traverse should be "parent" (again, since
-                //   left -> current -> right).
+               //1. We need to pick up where we left off with n's parent, which we'll call "parent".
+               //   If n was to the left of "parent", then the next node we should traverse should be "parent" (again, since
+               //   left -> current -> right).
 
-                //2. If n were to the right of "parent", then we have fully traversed n's subtree as well. We need to
-                //traverse upwards from n until we find a node x that we have not fully traversed. How
-                //do we know that we have not fully traversed a node x? We know we have hit this case
-                //when we move from a left node to its parent. The left node is fully traversed, but its
-                //parent is not.
+               //2. If n were to the right of "parent", then we have fully traversed n's subtree as well. We need to
+               //traverse upwards from n until we find a node x that we have not fully traversed. How
+               //do we know that we have not fully traversed a node x? We know we have hit this case
+               //when we move from a left node to its parent. The left node is fully traversed, but its
+               //parent is not.
 
-                // n->left>right->left
-                // the current value is n->left->right 
+               // situation 1 
+               // n->left>right->left
+               // the current value is n->left->right
+ 
+
+               // situation 2
+               // n->right->right->right
+               // the current value n->right->right->right
                
                 while (parent != null && parent.left != precious)
                 {

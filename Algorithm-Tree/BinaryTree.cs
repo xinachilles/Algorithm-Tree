@@ -40,7 +40,7 @@ namespace ClassLibrary.Tree
 
 
     }
-    public class BinaryTree<T> : IEnumerable<TreeNode<T>>
+    public class BinaryTree<T> : IEnumerable<TreeNode<T>> where T : IComparable<T>
     {
         public IEnumerator<TreeNode<T>> GetEnumerator()
         {
@@ -204,38 +204,11 @@ namespace ClassLibrary.Tree
         //4.1 Implement a function to check if a binary tree is balanced. For the purposes of
         //this question, a balanced tree is defined to be a tree such that the heights of the
         //two subtrees of any node never differ by more than one.
-        int d = 0;
-        int num = 0;
-        
-        public int getHeight(TreeNode<int> node, ref int[] dep)
-        {
-            if (node == null) return 0; // Base case
-            int d =  Math.Max(getHeight(node.left, ref dep), getHeight(node.right,ref dep)) + 1;
-            dep[num++] = d;
-            return d; 
-            
-        }
-
-       
-        public void getDepth(TreeNode<int> head, ref int[] dep)
-        {
-            if (head == null) return;
-            ++d;
-            getDepth(head.left, ref dep);
-            if (head.left == null && head.right == null)
-                dep[num++] = d;
-            getDepth(head.right, ref dep);
-            --d;
-        }
-
-
         public int getHeight(TreeNode<int> node)
         {
             if (node == null) return 0; // Base case
-            return  Math.Max(getHeight(node.left), getHeight(node.right)) + 1;
-            
+            return Math.Max(getHeight(node.left), getHeight(node.right)) + 1;
         }
-
 
         public bool IsBalanced(TreeNode<int> node)
         {
@@ -351,8 +324,8 @@ namespace ClassLibrary.Tree
                 list = new List<TreeNode<T>>();
                 /* Levels are always traversed in order. So., if this is the
                 * first time we've visited level i, we must have seen levels
-                * 0 through i - 1. We can therefore safely add the level at
-                * the end. */
+                10 * 0 through i - 1. We can therefore safely add the level at
+                II * the end. */
                 lists.Add(list);
             }
             else
@@ -472,7 +445,7 @@ namespace ClassLibrary.Tree
             // check current value 
             if (node.Value > max || node.Value <= min) { return false; }
 
-            if (!CheckBST(node.left, min, node.Value) || !CheckBST(node.right, node.Value, max))
+            if (!CheckBST(node.left, min, node.Value) || !CheckBST(node.right, node.Value, min))
             {
                 return false;
 
@@ -610,6 +583,85 @@ namespace ClassLibrary.Tree
 
         // Given a binary tree, design an algorithm which creates a linked list of all the nodes at
         // each depth (e.g., if you have a tree with depth D, you'll have D linked lists).
+
+        #region 4.8
+        //4.8 You have two very large binary trees: Tl, with millions of nodes, and T2, with
+        //hundreds of nodes. Create an algorithm to decide ifT2 is a subtree ofTl.
+        //A tree T2 is a subtree of Tl if there exists a node n in Tl such that the subtree ofn
+        //is identical to T2. That is, if you cut off the tree at node n, the two trees would be
+        //identical.
+
+        //        thoughts on that matter though:
+        //1. The simple solution takes 0(n + m) memory. The alternative solution takes
+        //0(log(n) + log(m)) memory. Remember: memory usage can be a very big deal
+        //when it comes to scalability.
+
+        //2. The simple solution is 0(n + m) time and the alternative solution has a worst case
+        //time of 0(nm). However, the worst case time can be deceiving; we need to look
+        //deeper than that.
+
+        //3. A slightly tighter bound on the runtime, as explained earlier, is 0(n + km), where
+        //k is the number of occurrences of T2's root in Tl. Let's suppose the node data for
+        //Tl and T2 were random numbers picked between 0 and p. The value of k would
+        //be approximately n/p. Why? Because each of n nodes in Tl has a 1/p chance of
+        //equaling the root, so approximately n/p nodes in Tl should equal T2. root. So, let's
+        //say p = 1000, n = 1000000 and m = 100. We would do somewhere around
+        //1,100,000 node checks (1100000 = 1000000 + 100*1000000/1000).
+
+        //4. More complex mathematics and assumptions could get us an even tighter bound.
+        //We assumed in #3 above that if we call treeMatch, we will end up traversing all m
+        //nodes of T2. It's far more likely though that we will find a difference very early on in
+        //the tree and will then exit early.
+
+        //In summary, the alternative approach is certainly more optimal in terms of space and
+        //is likely more optimal in terms of time as well. It all depends on what assumptions you
+        //make and whether you prioritize reducing the average case runtime at the expense of
+        //the worst case runtime. This is an excellent point to make to your interviewer.
+        public bool ContainsTree(TreeNode<T> t1, TreeNode<T> t2)
+        {
+            if (t2 == null)
+            { // The empty tree is always a subtree
+                return true;
+            }
+
+            if (t1 == null)
+            {
+                return false; // big tree empty & subtree still not found.
+            }
+            return SubTree(t1, t2);
+        }
+
+        private bool SubTree(TreeNode<T> r1, TreeNode<T> r2)
+        {
+
+            if (r1.Value.CompareTo(r2.Value) == 0)
+            {
+                if (MatchTree(r1, r2)) return true;
+            }
+            return (SubTree(r1.left, r2) || SubTree(r1.right, r2));
+        }
+
+        bool MatchTree(TreeNode<T> r1, TreeNode<T> r2)
+        {
+            if (r2 == null && r1 == null) // if both are empty
+                return true; // nothing left in the subtree
+
+            // if one, but not both, are empty
+            if (r1 == null || r2 == null)
+            {
+                return false;
+            }
+
+            if (r1.Value.CompareTo(r2.Value) != 0) return false; // data doesn't match
+            return (MatchTree(r1.left, r2.left) && MatchTree(r1.right, r2.right));
+        }
+
+
+
+        #endregion
+
+
+      
     }
 
 }
