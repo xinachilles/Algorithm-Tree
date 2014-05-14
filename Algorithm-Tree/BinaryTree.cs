@@ -43,7 +43,7 @@ namespace ClassLibrary.Tree
     public class BinaryTree<T> : IEnumerable<TreeNode<T>> where T : IComparable<T>
     {
         public IEnumerator<TreeNode<T>> GetEnumerator()
-        {
+        { 
             throw new NotImplementedException();
         }
 
@@ -660,8 +660,71 @@ namespace ClassLibrary.Tree
 
         #endregion
 
+        #region leet Sum Root to Leaf Numbers
+        /*
+         Given a binary tree containing digits from 0-9 only, each root-to-leaf path could represent a number.
+         An example is the root-to-leaf path 1->2->3 which represents the number 123.  
+         Find the total sum of all root-to-leaf numbers.For example,
+         *  1
+            / \
+            2   3
+         * The root-to-leaf path 1->2 represents the number 12.
+           The root-to-leaf path 1->3 represents the number 13.Return the sum = 12 + 13 = 25.
+         */
 
-      
+        int SumNumbers(TreeNode<int> root)
+        {
+            int n = 0;
+            int level = 0;
+            bool done = false;
+            TreeNode<int> current = root;
+            Stack<TreeNode<int>> temp = new Stack<TreeNode<int>>();
+            int result = 0;
+            while(done == false){
+
+                if (current != null)
+                {
+                    temp.Push(current);
+                    current = current.left;
+                }
+                else if (temp.Count == 0)
+                {
+
+                    done = true;
+
+                }
+                else {
+                        level = level +1;
+                       
+                        if (current.right != null)
+                        {
+                            result = result + (current.left.Value + current.right.Value + n) % 10 * level;
+                            n = current.left.Value + current.right.Value > 10 ? 1 : 0;
+                            current = current.right;
+                        }
+                        else {
+                            result = result + (current.left.Value + n) * level;
+                        }
+                    
+                
+                
+                } // end if
+
+            }
+
+            if (root != null) {
+                result = root.Value * level + result;
+            
+            }
+            return result;
+            
+        }
+
+
+        
+        
+        #endregion
+
     }
 
 }
