@@ -11,7 +11,7 @@ namespace ClassLibrary.Tree
 
     public class AVLTree<T> : BinarySearchTree<T> where T:IComparable<T>
     {
-        private TreeNode<T> root;
+        private TreeNode<T> root =null;
 
         private int Height(TreeNode<T> node)
         {

@@ -249,5 +249,103 @@ namespace Algorithm_Tree_Test
         {
             CommonAncerstorProvedSolutionThreeTestHelper<GenericParameterHelper>();
         }
+
+    
+
+        
+
+  
+
+        /// <summary>
+        ///A test for MaxPathSum
+        ///</summary>
+        ///
+        [TestMethod()]
+        public void MaxPathSumTest()
+        {
+            BinaryTree<int> target = new BinaryTree<int>(); // TODO: Initialize to an appropriate value
+            TreeNode<int> root = new TreeNode<int>(1); // TODO: Initialize to an appropriate value
+            root.left = new TreeNode<int>(2);
+            root.right = new TreeNode<int>(3);
+            int expected = 0; // TODO: Initialize to an appropriate value
+            int actual;
+            actual = target.MaxPathSum(root);
+            Assert.AreEqual(expected, actual);
+            Assert.Inconclusive("Verify the correctness of this test method.");
+        }
+
+
+
+
+
+        /// <summary>
+        ///A test for SumNumbers
+        ///</summary>
+        public void SumNumbersTestHelper<T>()
+            where T : IComparable<T>
+        {
+            BinaryTree_Accessor<T> target = new BinaryTree_Accessor<T>(); // TODO: Initialize to an appropriate value
+            TreeNode<int> root = new TreeNode<int>(1);
+            root.left = new TreeNode<int>(2);
+            root.right = new TreeNode<int>(3);
+
+            root.right.right = new TreeNode<int>(8);
+            root.right.right.right = new TreeNode<int>(9);
+
+            root.left.right = new TreeNode<int>(6);
+            root.left.left = new TreeNode<int>(4);
+
+            root.left.left.left = new TreeNode<int>(5);
+            root.left.left.right = new TreeNode<int>(7);
+
+            int expected = 25; // TODO: Initialize to an appropriate value
+            double actual;
+            actual = target.SumNumbers(root);
+            Assert.AreEqual(expected, actual);
+           
+        }
+
+        [TestMethod()]
+        [DeploymentItem("Algorithm-Tree.dll")]
+        public void SumNumbersTest()
+        {
+            SumNumbersTestHelper<int>();
+        }
+
+        /// <summary>
+        ///A test for SumNumbers2
+        ///</summary>
+        public void SumNumbers2TestHelper<T>()
+            where T : IComparable<T>
+        {
+            BinaryTree_Accessor<T> target = new BinaryTree_Accessor<T>(); // TODO: Initialize to an appropriate value
+            TreeNode<int> root = new TreeNode<int>(1);
+            root.left = new TreeNode<int>(2);
+            root.right = new TreeNode<int>(3);
+
+            root.right.right = new TreeNode<int>(8);
+            root.right.right.right = new TreeNode<int>(9);
+
+            root.left.right = new TreeNode<int>(6); 
+            root.left.left = new TreeNode<int>(4);
+           
+            root.left.left.left = new TreeNode<int>(5);
+            root.left.left.right = new TreeNode<int>(7);
+            
+            
+           
+            int expected = 0; // TODO: Initialize to an appropriate value
+            int actual;
+            actual = target.SumNumbers2(root);
+            Assert.AreEqual(expected, actual);
+           
+        }
+
+        [TestMethod()]
+        [DeploymentItem("Algorithm-Tree.dll")]
+        public void SumNumbers2Test()
+        {
+            SumNumbers2TestHelper<int>();
+        }
     }
 }

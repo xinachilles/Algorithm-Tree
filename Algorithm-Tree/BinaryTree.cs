@@ -25,6 +25,8 @@ namespace ClassLibrary.Tree
 
 
 
+
+
         public T Value
         {
             get
@@ -43,7 +45,7 @@ namespace ClassLibrary.Tree
     public class BinaryTree<T> : IEnumerable<TreeNode<T>> where T : IComparable<T>
     {
         public IEnumerator<TreeNode<T>> GetEnumerator()
-        { 
+        {
             throw new NotImplementedException();
         }
 
@@ -146,6 +148,36 @@ namespace ClassLibrary.Tree
                 }
             }
 
+
+        }
+        /*level order traver */
+        public void LevelorderTraversal(TreeNode<int> root)
+        {
+            int h = getHeight(root);
+
+            for (int i = 0; i < h; i++)
+            {
+                printGivenLevel(root, i);
+            }
+
+        }
+
+        private void printGivenLevel(TreeNode<int> root, int level)
+        {
+            TreeNode<int> current = root;
+
+            if (current == null)
+                return;
+            if (level == 1)
+            {
+                // ...
+            }
+
+            else if (level > 1)
+            {
+                printGivenLevel(current.left, level - 1);
+                printGivenLevel(current.right, level - 1);
+            }
 
         }
 
@@ -672,6 +704,11 @@ namespace ClassLibrary.Tree
            The root-to-leaf path 1->3 represents the number 13.Return the sum = 12 + 13 = 25.
          */
 
+
+        /*solution 1 */
+        /*
+            I try to use the way similar with perorder or inorder travel tree, It seems does`t work for this problem
+         */
         int SumNumbers(TreeNode<int> root)
         {
             int n = 0;
@@ -680,7 +717,8 @@ namespace ClassLibrary.Tree
             TreeNode<int> current = root;
             Stack<TreeNode<int>> temp = new Stack<TreeNode<int>>();
             int result = 0;
-            while(done == false){
+            while (done == false)
+            {
 
                 if (current != null)
                 {
@@ -693,38 +731,140 @@ namespace ClassLibrary.Tree
                     done = true;
 
                 }
-                else {
-                        level = level +1;
-                       
-                        if (current.right != null)
-                        {
-                            result = result + (current.left.Value + current.right.Value + n) % 10 * level;
-                            n = current.left.Value + current.right.Value > 10 ? 1 : 0;
-                            current = current.right;
-                        }
-                        else {
-                            result = result + (current.left.Value + n) * level;
-                        }
-                    
-                
-                
+                else
+                {
+                    level = level + 1;
+                    TreeNode<int> node = temp.Pop();
+                    if (node.right != null)
+                    {
+                        result = result + (node.left.Value + node.right.Value + n) % 10 * level;
+                        n = node.left.Value + node.right.Value > 10 ? 1 : 0;
+                        node = node.right;
+                    }
+                    else
+                    {
+                        result = result + (node.left.Value + n) * level;
+                    }
+
+
+
                 } // end if
 
             }
 
-            if (root != null) {
+            if (root != null)
+            {
                 result = root.Value * level + result;
-            
+
             }
             return result;
-            
+
+        }
+        /*end solution 1*/
+
+        /*solution 2*/
+        /*
+         three situation 
+         * 
+         * 1. empty node
+         * 2. leave node
+         * 3. the node between root and leave
+       */
+
+
+        int dfs(TreeNode<int> root, int sum)
+        {
+            if (root == null) return 0;
+
+            if (root.left == null && root.right == null) return sum = root.Value + 10 * sum;
+
+            else return dfs(root.left, sum * 10 + root.Value) + dfs(root.right, sum * 10 + root.Value);
         }
 
+        public int SumNumbers2(TreeNode<int> root)
+        {
+            // Start typing your C/C++ solution below
+            // DO NOT write int main() function
+            return dfs(root, 0);
+        }
 
-        
-        
+        /*end solution 2*/
+
+        /*solution 3  deap first while loop*/
+       
+        /**/
+
         #endregion
 
+
+
+        #region leet Binary Tree Maximum path sum
+        /*another solution from http://jane4532.blogspot.com/2013/09/binary-tree-maximum-path-sumleetcode.html */
+        /*Given a binary tree, find the maximum path sum.
+        The path may start and end at any node in the tree.
+        For example:
+         * For example:
+        Given the below binary tree,
+       1
+      / \
+     2   3
+     Given the below binary tree, */
+        /*solution 2*/
+        int MaxPathSum2Help(TreeNode<int> root, int max)
+        {
+            if (root == null) return 0;
+
+            int l = MaxPathSum2Help(root.left, max);
+            int r = MaxPathSum2Help(root.right, max);
+
+            int m = root.Value;
+
+            if (l > 0) m = l + m;
+            if (r > 0) m = r + m;
+
+            if (m > max) max = m;
+
+            return (Math.Max(l, r) > 0 ? Math.Max(l, r) + root.Value : root.Value);
+        }
+
+        int maxPathSum2(TreeNode<int> root)
+        {
+            int max = int.MinValue;
+
+            MaxPathSum2Help(root, max);
+
+            return max;
+        }
+
+        /*splution 2*/
+
+        /*solution 1*/
+        int max;
+        public int MaxPathSum(TreeNode<int> root)
+        {
+            max = (root == null) ? 0 : root.Value;
+            findMax(root);
+            return max;
+        }
+
+        private int findMax(TreeNode<int> node)
+        {
+            if (node == null)
+                return 0;
+
+            // recursively get sum of left and right path
+            int left = Math.Max(findMax(node.left), 0);
+            int right = Math.Max(findMax(node.right), 0);
+
+            //update maximum here
+            max = Math.Max(node.Value + left + right, max);
+
+            // return sum of largest path of current node
+            return node.Value + Math.Max(left, right);
+        }
+
+        /*solution 1*/
+        #endregion
     }
 
 }
