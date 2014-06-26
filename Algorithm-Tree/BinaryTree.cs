@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Collections;
-using System.Collections.ObjectModel;
 
 
 namespace ClassLibrary.Tree
@@ -15,6 +15,7 @@ namespace ClassLibrary.Tree
         public TreeNode<T> left;
         public TreeNode<T> right;
         public TreeNode<T> parent;
+        public TreeNode<T> next; // for Populating Next Right Pointers in Each Node I and II
         public int height;
         public TreeNode() { }
         public TreeNode(T value)
@@ -150,7 +151,8 @@ namespace ClassLibrary.Tree
 
 
         }
-        /*level order traver */
+
+        #region level order traver 
         public void LevelorderTraversal(TreeNode<int> root)
         {
             int h = getHeight(root);
@@ -170,7 +172,7 @@ namespace ClassLibrary.Tree
                 return;
             if (level == 1)
             {
-                // ...
+                Console.WriteLine(root.Value);
             }
 
             else if (level > 1)
@@ -180,14 +182,13 @@ namespace ClassLibrary.Tree
             }
 
         }
-
+        #endregion
 
         // create binary tree for testing 
         public void Add(T data)
         {
 
             TreeNode<T> current = new TreeNode<T>(data);
-
 
             if (root == null)
             {
@@ -206,23 +207,23 @@ namespace ClassLibrary.Tree
                     if (node.right != null && node.left != null)
                     {
                         TreeRecords.Dequeue();
-                        TreeRecords.Enqueue(node.right);
                         TreeRecords.Enqueue(node.left);
+                        TreeRecords.Enqueue(node.right);
                         node = TreeRecords.Peek();
 
                     }
 
 
 
-                    if (node.right == null)
+                    if (node.left == null)
                     {
-                        node.right = current;
+                        node.left = current;
 
                     }
 
-                    else if (node.left == null)
+                    else if (node.right == null)
                     {
-                        node.left = current;
+                        node.right = current;
 
                     }
 
@@ -783,8 +784,7 @@ namespace ClassLibrary.Tree
 
         public int SumNumbers2(TreeNode<int> root)
         {
-            // Start typing your C/C++ solution below
-            // DO NOT write int main() function
+            
             return dfs(root, 0);
         }
 
@@ -795,8 +795,6 @@ namespace ClassLibrary.Tree
         /**/
 
         #endregion
-
-
 
         #region leet Binary Tree Maximum path sum
         /*another solution from http://jane4532.blogspot.com/2013/09/binary-tree-maximum-path-sumleetcode.html */
@@ -810,7 +808,7 @@ namespace ClassLibrary.Tree
      2   3
      Given the below binary tree, */
         /*solution 2*/
-        int MaxPathSum2Help(TreeNode<int> root, int max)
+      private  int MaxPathSum2Help(TreeNode<int> root, int max)
         {
             if (root == null) return 0;
 
@@ -827,7 +825,7 @@ namespace ClassLibrary.Tree
             return (Math.Max(l, r) > 0 ? Math.Max(l, r) + root.Value : root.Value);
         }
 
-        int maxPathSum2(TreeNode<int> root)
+     public int maxPathSum2(TreeNode<int> root)
         {
             int max = int.MinValue;
 
@@ -836,7 +834,7 @@ namespace ClassLibrary.Tree
             return max;
         }
 
-        /*splution 2*/
+        /*solution 2*/
 
         /*solution 1*/
         int max;
@@ -855,7 +853,7 @@ namespace ClassLibrary.Tree
             // recursively get sum of left and right path
             int left = Math.Max(findMax(node.left), 0);
             int right = Math.Max(findMax(node.right), 0);
-
+             
             //update maximum here
             max = Math.Max(node.Value + left + right, max);
 
@@ -865,6 +863,273 @@ namespace ClassLibrary.Tree
 
         /*solution 1*/
         #endregion
+
+        #region Populating Next Right Pointers in Each Node
+
+        /*
+                         Given a binary tree
+                    struct TreeLinkNode {
+                      TreeLinkNode *left;
+                      TreeLinkNode *right;
+                      TreeLinkNode *next;
+                    }
+                Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set toNULL.
+                Initially, all next pointers are set to NULL.
+                Note:
+                You may only use constant extra space.
+                You may assume that it is a perfect binary tree (ie, all leaves are at the same level, and every parent has two children).
+                For example,
+                Given the following perfect binary tree,
+                         1
+                       /  \
+                      2    3
+                     / \  / \
+                    4  5  6  7
+                After calling your function, the tree should look like:
+                         1 -> NULL
+                       /  \
+                      2 -> 3 -> NULL
+                     / \  / \
+                    4->5->6->7 -> NULL
+         
+         */
+
+       
+
+        public void Connect(TreeNode<T> root)
+        {
+            if (root == null) { return; }
+            root.next = null;
+            Dfs(root);
+        }
+
+        private void Dfs(TreeNode<T> root)
+        {
+            if (root == null) { return; }  // if current node is not valid return
+
+            if (root.next == null)
+            { // if current node is not in the right boundary of this level
+                if (root.right != null)
+                {   // if has right child, its next is null
+                    root.right.next = null;
+                }
+                if (root.left != null)
+                { //if has left child, its next is its right
+
+                    root.left.next = root.right;
+
+                }
+            }
+            else
+            { // if the current node has next node in its right
+                TreeNode<T> p = root.next; //the pointer travle along this level 
+                TreeNode<T> q = null; // the next valid pointer in the level+1 , or NULL if not found
+                while (p != null)
+                { //find the next valid child of root node
+                    if (p.left != null) { q = p.left; break; }
+                    if (p.right != null) { q = p.right; break; }
+                    p = p.next;
+                }
+                if (root.right != null) { root.right.next = q; } //set right child if exists
+                if (root.left != null && root.right != null) { root.left.next = root.right; }//set left if right exists
+                if (root.left != null && root.right == null) { root.left.next = q; } // set left if right not exist
+            }
+
+            Dfs(root.right); // search right child, order is important
+            Dfs(root.left);  // search left child
+        }
+
+
+        #endregion
+
+        #region Populating Next Right Pointers in Each Node II
+        /*
+                         Follow up for problem "Populating Next Right Pointers in Each Node".
+
+                What if the given tree could be any binary tree? Would your previous solution still work?
+
+                Note:
+
+                You may only use constant extra space.
+                For example,
+                Given the following binary tree,
+                         1l
+                       /  \
+                      2    3
+                     / \    \
+                    4   5    7
+                After calling your function, the tree should look like:
+                         1 -> NULL
+                       /  \
+                      2 -> 3 -> NULL
+                     / \    \
+                    4-> 5 -> 7 -> NULL
+         
+         */
+        public void Connect1(TreeNode<T> root)
+        {
+            if (root == null)
+            {
+                return;
+            }
+            Queue<TreeNode<T>> queue = new Queue<TreeNode<T>>();
+            Queue<TreeNode<T>> nextQueue = new Queue<TreeNode<T>>();
+            queue.Enqueue(root);
+            TreeNode<T> left = null;
+            while (queue.Count != 0)
+            {
+                TreeNode<T> node = queue.Dequeue();
+                if (left != null)
+                {
+                    left.next = node;
+                }
+                left = node;
+                if (node.left != null)
+                {
+                    nextQueue.Enqueue(node.left);
+                }
+                if (node.right != null)
+                {
+                    nextQueue.Enqueue(node.right);
+                }
+                if (queue.Count == 0)
+                {
+                    Queue<TreeNode<T>> temp = queue;
+                    queue = nextQueue;
+                    nextQueue = temp;
+                    left = null;
+                }
+            }
+        }
+
+        public void Connect2(TreeNode<T> root)
+        {
+
+
+        }
+        #endregion
+
+        #region Flatten Binary Tree to Linked List
+        /*
+                    Given a binary tree, flatten it to a linked list in-place.
+
+            For example,
+            Given
+
+                     1
+                    / \
+                   2   5
+                  / \   \
+                 3   4   6
+            The flattened tree should look like:
+
+               1
+                \
+                 2
+                  \
+                   3
+                    \
+                     4
+                      \
+                       5
+                        \
+                         6
+
+                   
+             */
+        /*not correct */
+        public void Flatten(TreeNode<T> treeNode, ref TreeNode<T> n)
+        {
+            if (treeNode == null)
+            {
+                return;
+            }
+
+            //if (n == null)
+            //{
+            //    n = new TreeNode<T>();
+            //}
+            n = new TreeNode<T>(treeNode.Value);
+
+            
+                Flatten(treeNode.left, ref n.left);
+           
+           
+
+                Flatten(treeNode.right, ref n.left);
+            
+        }
+
+        public void FlattenBSF(TreeNode<T> treeNode,  ref TreeNode<T> n)
+        {
+            Queue<TreeNode<T>> currentQ = new Queue<TreeNode<T>>();
+            
+        
+            currentQ.Enqueue(treeNode);
+            TreeNode<T> temp = n;
+
+            while(currentQ.Count !=0)
+            {
+                TreeNode<T> current = currentQ.Dequeue();
+                if (current != null)
+                {
+
+                    currentQ.Enqueue(current.left);
+                    currentQ.Enqueue(current.right);
+
+                    if (n == null)
+                    {
+                        n = new TreeNode<T>(current.Value);
+
+                        temp = n;
+                    }
+                    else
+                    {
+                        while (temp.left != null)
+                        {
+                            temp = temp.left;
+                        }
+                        temp.left = new TreeNode<T>(current.Value);
+                    }
+                }
+
+                
+            
+            }
+
+
+        
+        }
+        #endregion
+
+        #region Path Sum II 
+
+                    /*
+                     /** 
+             *   
+             *  
+             * Given a binary tree and a sum, find all root-to-leaf paths where each path's sum equals the given sum. 
+ 
+            For example: 
+            Given the below binary tree and sum = 22, 
+                          5 
+                         / \ 
+                        4    8 
+                       /     / \ 
+                      11  13  4 
+                     /  \      / \ 
+                    7    2   5   1 
+            return 
+            [ 
+               [5,4,11,2], 
+               [5,8,4,5] 
+            ] 
+             */  
+         
+         
+
+        #endregion
+
     }
 
 }

@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 namespace Algorithm_Tree_Test
 {
-    
-    
+
+
     /// <summary>
     ///This is a test class for BinaryTreeTest and is intended
     ///to contain all BinaryTreeTest Unit Tests
@@ -71,18 +71,18 @@ namespace Algorithm_Tree_Test
         public void CheckBSTTestHelper<T>()
         {
             BinaryTree<int> target = new BinaryTree<int>(); // TODO: Initialize to an appropriate value
-            
-                target.Add(0);
-                target.Add(1);
-                target.Add(7);
-                target.Add(3);
-                target.Add(4); 
-                target.Add(5); 
-                target.Add(6);
 
-                                            
-            bool actual  = target.CheckBST(target.root);
-            
+            target.Add(0);
+            target.Add(1);
+            target.Add(7);
+            target.Add(3);
+            target.Add(4);
+            target.Add(5);
+            target.Add(6);
+
+
+            bool actual = target.CheckBST(target.root);
+
         }
 
         [TestMethod()]
@@ -102,7 +102,7 @@ namespace Algorithm_Tree_Test
             target.Add(3);
             target.Add(4);
             target.Add(5);
-            }
+        }
 
         [TestMethod()]
         public void AddTest()
@@ -146,8 +146,8 @@ namespace Algorithm_Tree_Test
             target.Add(4);
             target.Add(5);
 
-           target.CreateLevellinkedListTwo(target.root);
-            
+            target.CreateLevellinkedListTwo(target.root);
+
         }
 
         [TestMethod()]
@@ -172,7 +172,7 @@ namespace Algorithm_Tree_Test
             target.root.right.right = new TreeNode<int>(7);
             target.root.right.right.left = new TreeNode<int>(8);
 
-            
+
             target.InorderTraversalWhileLoop(target.root);
         }
 
@@ -250,11 +250,11 @@ namespace Algorithm_Tree_Test
             CommonAncerstorProvedSolutionThreeTestHelper<GenericParameterHelper>();
         }
 
-    
 
-        
 
-  
+
+
+
 
         /// <summary>
         ///A test for MaxPathSum
@@ -302,7 +302,7 @@ namespace Algorithm_Tree_Test
             double actual;
             actual = target.SumNumbers(root);
             Assert.AreEqual(expected, actual);
-           
+
         }
 
         [TestMethod()]
@@ -318,27 +318,19 @@ namespace Algorithm_Tree_Test
         public void SumNumbers2TestHelper<T>()
             where T : IComparable<T>
         {
-            BinaryTree_Accessor<T> target = new BinaryTree_Accessor<T>(); // TODO: Initialize to an appropriate value
-            TreeNode<int> root = new TreeNode<int>(1);
-            root.left = new TreeNode<int>(2);
-            root.right = new TreeNode<int>(3);
+            BinaryTree<int> target = new BinaryTree<int>(); // TODO: Initialize to an appropriate value
+            int[] test = { 1, 2, 3};
+            foreach (int item in test)
+            {
+                target.Add(item);
+            }
 
-            root.right.right = new TreeNode<int>(8);
-            root.right.right.right = new TreeNode<int>(9);
 
-            root.left.right = new TreeNode<int>(6); 
-            root.left.left = new TreeNode<int>(4);
-           
-            root.left.left.left = new TreeNode<int>(5);
-            root.left.left.right = new TreeNode<int>(7);
-            
-            
-           
             int expected = 0; // TODO: Initialize to an appropriate value
             int actual;
-            actual = target.SumNumbers2(root);
+            actual = target.SumNumbers2(target.root);
             Assert.AreEqual(expected, actual);
-           
+
         }
 
         [TestMethod()]
@@ -346,6 +338,118 @@ namespace Algorithm_Tree_Test
         public void SumNumbers2Test()
         {
             SumNumbers2TestHelper<int>();
+        }
+
+        /// <summary>
+        ///A test for LevelorderTraversal
+        ///</summary>
+        public void LevelorderTraversalTestHelper<T>()
+            where T : IComparable<T>
+        {
+            BinaryTree<int> target = new BinaryTree<int>(); // TODO: Initialize to an appropriate value
+            int[] test = { 1, 2, 3, 4, 5, 6, 7, 8 };
+            foreach (int item in test)
+            {
+                target.Add(item);
+            }
+            target.LevelorderTraversal(target.root);
+
+        }
+
+        [TestMethod()]
+        public void LevelorderTraversalTest()
+        {
+            LevelorderTraversalTestHelper<int>();
+        }
+
+        /// <summary>
+        ///A test for Connect1
+        ///</summary>
+        public void Connect1TestHelper<T>()
+            where T : IComparable<T>
+        {
+            BinaryTree<int> target = new BinaryTree<int>(); // TODO: Initialize to an appropriate value
+            int[] test = { 1, 2, 3, 4, 5, 6, 7, 8 };
+            foreach (int item in test)
+            {
+                target.Add(item);
+            }
+            target.Connect1(target.root);
+
+        }
+
+        [TestMethod()]
+        public void Connect1Test()
+        {
+            Connect1TestHelper<int>();
+        }
+
+        /// <summary>
+        ///A test for Connect
+        ///</summary>
+        public void ConnectTestHelper<T>()
+            where T : IComparable<T>
+        {
+            BinaryTree<int> target = new BinaryTree<int>(); // TODO: Initialize to an appropriate value
+            int[] test = { 1, 2, 3, 4, 5, 6, 7, 8 };
+            foreach (int item in test)
+            {
+                target.Add(item);
+            }
+            target.Connect(target.root);
+            Assert.Inconclusive("A method that does not return a value cannot be verified.");
+        }
+
+        [TestMethod()]
+        public void ConnectTest()
+        {
+            ConnectTestHelper<int>();
+        }
+
+        /// <summary>
+        ///A test for Flatten
+        ///</summary>
+        public void FlattenTestHelper<T>()
+            where T : IComparable<T>
+        {
+            BinaryTree<int> target = new BinaryTree<int>(); // TODO: Initialize to an appropriate value
+            TreeNode<int> n = new TreeNode<int>();
+            int[] test = { 1, 2, 3, 4, 5, 6, 7, 8 };
+            foreach (int item in test)
+            {
+                target.Add(item);
+            }
+            target.Flatten(target.root, ref n);
+
+        }
+
+        [TestMethod()]
+        public void FlattenTest()
+        {
+            FlattenTestHelper<int>();
+        }
+
+        /// <summary>
+        ///A test for FlattenBSF
+        ///</summary>
+        public void FlattenBSFTestHelper<T>()
+            where T : IComparable<T>
+        {
+            BinaryTree<int> target = new BinaryTree<int>(); // TODO: Initialize to an appropriate value
+            TreeNode<int> n = null;
+            int[] test = { 1, 2, 3, 4, 5, 6, 7, 8 };
+            foreach (int item in test)
+            {
+                target.Add(item);
+            }
+            target.FlattenBSF(target.root, ref n);
+
+        }
+
+        [TestMethod()]
+        public void FlattenBSFTest()
+        {
+            FlattenBSFTestHelper<int>();
         }
     }
 }
