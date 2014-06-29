@@ -1,6 +1,7 @@
 ﻿using ClassLibrary.Tree;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 
 namespace Algorithm_Tree_Test
 {
@@ -120,6 +121,30 @@ namespace Algorithm_Tree_Test
             actual = target.CreateMinimalBST(arrj, start, end);
             Assert.AreEqual(expected, actual);
            
+        }
+
+        /// <summary>
+        ///A test for SortedListToBST
+        ///</summary>
+        public void SortedListToBSTTestHelper<T>()
+            where T : IComparable<T>
+        {
+            BinarySearchTree<T> target = new BinarySearchTree<T>(); // TODO: Initialize to an appropriate value
+            int[] temp_array = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+            LinkedList<int> head = new LinkedList<int>(temp_array);
+
+            TreeNode<int> expected = null; // TODO: Initialize to an appropriate value
+            TreeNode<int> actual;
+            actual = target.SortedListToBST(head);
+            Assert.AreEqual(expected, actual);
+            Assert.Inconclusive("Verify the correctness of this test method.");
+        }
+
+        [TestMethod()]
+        public void SortedListToBSTTest()
+        {
+            SortedListToBSTTestHelper<int>();
         }
     }
 }

@@ -451,5 +451,38 @@ namespace Algorithm_Tree_Test
         {
             FlattenBSFTestHelper<int>();
         }
+
+        /// <summary>
+        ///A test for PathSum2
+        ///</summary>
+        public void PathSum2TestHelper<T>()
+            where T : IComparable<T>
+        {
+            BinaryTree<int> target = new BinaryTree<int>(); // TODO: Initialize to an appropriate value
+            target.root = new TreeNode<int>(5);
+            target.root.right = new TreeNode<int>(8);
+            target.root.left = new TreeNode<int>(4);
+            target.root.left.left = new TreeNode<int>(11);
+            target.root.left.left.left = new TreeNode<int>(7);
+            target.root.left.left.right = new TreeNode<int>(2);
+
+            target.root.right.left = new TreeNode<int>(13);
+            target.root.right.right = new TreeNode<int>(4);
+
+            target.root.right.right.left = new TreeNode<int>(5);
+            target.root.right.right.right = new TreeNode<int>(1);
+
+            int sum = 22; // TODO: Initialize to an appropriate value
+          
+            List<Stack<int>> actual;
+            actual = target.PathSum2(target.root, sum);
+            
+        }
+
+        [TestMethod()]
+        public void PathSum2Test()
+        {
+            PathSum2TestHelper<int>();
+        }
     }
 }

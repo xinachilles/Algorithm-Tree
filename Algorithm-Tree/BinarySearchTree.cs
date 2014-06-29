@@ -135,58 +135,7 @@ namespace ClassLibrary.Tree
 
         // create binary tree 
 
-        #region 4.9
-        // You are given a biwnary tree in which each node contains a value. Design an algorithm
-        // to print all paths which sum to a given value. The path does not need to start
-        // or end at the root or a leaf.
-
-
-        public void FindSum(TreeNode<int> current, int sum)
-        {
-            int depth = getHeight(current);
-            TreeNode<int>[] path = new TreeNode<int>[depth];
-            FindSum(current, path, 0, sum);
-
-        }
-
-        private void FindSum(TreeNode<int> current, TreeNode<int>[] path, int level, int sum)
-        {
-            if (current == null) return;
-
-            // interst current level into path array
-            path[level] = current;
-
-            int t = 0;
-
-            for (int i = level; i >= 0; i--)
-            {
-                t = path[i].Value + t;
-                if (t == sum)
-                {
-                    printPath(path, i, level);
-
-                }
-            }
-
-            FindSum(current.right, path, level + 1, sum);
-            FindSum(current.left, path, level + 1, sum);
-
-
-
-
-
-        }
-
-        private void printPath(TreeNode<int>[] path, int start, int end)
-        {
-            for (int i = start; i <= end; i++)
-            {
-                Console.WriteLine("the index is :{0}, the value is: {1}", i, path[i].Value);
-            }
-
-        }
-
-        #endregion
+      
 
         #region 4.3
 
@@ -277,7 +226,36 @@ namespace ClassLibrary.Tree
 
         #endregion
 
+        #region 
 
+        /*
+        Given a singly linked list where elements are sorted in ascending order, convert it to a height balanced BST.
+        */
+
+        public TreeNode<int> SortedListToBST(LinkedList<int> head)
+        {
+            TreeNode<int> root = null; 
+            
+             SortedListToBSTHelp(ref root, head,0, head.Count - 1);
+            
+            return root;
+        }
+
+        public void SortedListToBSTHelp(ref TreeNode<int> root, LinkedList<int> head, int start, int end)
+        {
+            if(start > end)
+            {
+                return;
+            }
+
+            int mid = (start + end) / 2;
+            root = new TreeNode<int>( head.ElementAt<int>(mid));
+
+            SortedListToBSTHelp(ref root.left, head, start, mid - 1);
+            SortedListToBSTHelp(ref root.right, head, mid + 1,end);
+        
+        }
+        #endregion
     }
 
 }

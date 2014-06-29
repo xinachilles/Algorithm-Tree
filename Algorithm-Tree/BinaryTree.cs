@@ -37,6 +37,7 @@ namespace ClassLibrary.Tree
             set
             {
                 data = value;
+                
             }
         }
 
@@ -357,8 +358,8 @@ namespace ClassLibrary.Tree
                 list = new List<TreeNode<T>>();
                 /* Levels are always traversed in order. So., if this is the
                 * first time we've visited level i, we must have seen levels
-                10 * 0 through i - 1. We can therefore safely add the level at
-                II * the end. */
+                 0 through i - 1. We can therefore safely add the level at
+                i * the end. */
                 lists.Add(list);
             }
             else
@@ -690,6 +691,59 @@ namespace ClassLibrary.Tree
         }
 
 
+
+        #endregion
+
+        #region 4.9
+        // You are given a biwnary tree in which each node contains a value. Design an algorithm
+        // to print all paths which sum to a given value. The path does not need to start
+        // or end at the root or a leaf.
+
+
+        public void FindSum(TreeNode<int> current, int sum)
+        {
+            int depth = getHeight(current);
+            TreeNode<int>[] path = new TreeNode<int>[depth];
+            FindSum(current, path, 0, sum);
+
+        }
+
+        private void FindSum(TreeNode<int> current, TreeNode<int>[] path, int level, int sum)
+        {
+            if (current == null) return;
+
+            // interst current level into path array
+            path[level] = current;
+
+            int t = 0;
+
+            for (int i = level; i >= 0; i--)
+            {
+                t = path[i].Value + t;
+                if (t == sum)
+                {
+                    printPath(path, i, level);
+
+                }
+            }
+
+            FindSum(current.right, path, level + 1, sum);
+            FindSum(current.left, path, level + 1, sum);
+
+
+
+
+
+        }
+
+        private void printPath(TreeNode<int>[] path, int start, int end)
+        {
+            for (int i = start; i <= end; i++)
+            {
+                Console.WriteLine("the index is :{0}, the value is: {1}", i, path[i].Value);
+            }
+
+        }
 
         #endregion
 
@@ -1102,9 +1156,38 @@ namespace ClassLibrary.Tree
         }
         #endregion
 
-        #region Path Sum II 
+        #region Path Sum I
+            //        Path Sum I:
 
-                    /*
+            //Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
+            //For example:
+            //Given the below binary tree and sum = 22,
+            //              5
+            //             / \
+            //            4   8
+            //           /   / \
+            //          11  13  4
+            //         /  \      \
+            //        7    2      1
+            //return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
+
+        bool HasPathSum(TreeNode<int> root, int sum)
+        {
+            if (root == null) {
+                return false;
+            }
+
+            if (root.right == null && root.left == null && sum-root.Value == 0)
+            {
+                return true;
+            }
+            return (HasPathSum(root.right, sum - root.Value) || HasPathSum(root.left, sum - root.Value));
+
+        }
+        #endregion
+        #region Path Sum II
+
+        /*
                      /** 
              *   
              *  
@@ -1124,11 +1207,89 @@ namespace ClassLibrary.Tree
                [5,4,11,2], 
                [5,8,4,5] 
             ] 
-             */  
+             */
+
+      public List<Stack<int>> PathSum2(TreeNode<int> root, int sum)
+        {
+            List<Stack<int>> result = new List<Stack<int>>();
+            Stack<int> temp = new Stack<int>();
+            PathSum2Help(root, sum, temp, result); 
+            return result;
+        }
+
+        private void PathSum2Help(TreeNode<int> root, int sum, Stack<int> temp, List<Stack<int>> result)
+        {
+            if (root == null)
+            {
+                return;
+            }
+
+            temp.Push(root.Value);
+            if (root.left == null && root.right == null && sum-root.Value == 0)
+            {
+                result.Add(new Stack<int>(temp));
+                temp.Pop();
+                
+            }
+
+           
+                PathSum2Help(root.right, sum - root.Value, temp, result);
+                PathSum2Help(root.left, sum - root.Value, temp, result);
          
-         
+            
+                   // temp.Pop();
+        }
 
         #endregion
+        #region Minimum Depth of Binary Tree
+        public int MinDepth(TreeNode<T> root)
+        {
+            if (root != null)
+            {
+                int min = int.MaxValue;
+                MinDepthHelper(root, min, 0);
+                return min;
+            }
+            else {
+
+                return 0;
+            }
+
+        }
+        private void MinDepthHelper(TreeNode<T> root, int min, int height)
+        {
+            if (root == null)
+            {
+                return;
+            }
+           
+            if (root.right == null && root.left == null)
+            {
+                if (min > height )
+                {
+                    min = height;     
+                }
+            }
+
+            MinDepthHelper(root.left, min, height+1);
+            MinDepthHelper(root.right, min, height + 1);
+        
+        }
+
+        /*solution 2*/
+        public int MinDepth2(TreeNode<T> root)
+        {
+            if (root == null)
+            {
+                return 0;
+            }
+
+            return (Math.Min(MinDepth2(root.left), MinDepth2(root.right)) + 1);
+        }
+        /*end soultion 2 */
+        #endregion 
+        
+       
 
     }
 
