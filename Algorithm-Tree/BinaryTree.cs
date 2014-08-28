@@ -9,7 +9,7 @@ using System.Text;
 namespace ClassLibrary.Tree
 {
 
-    public class TreeNode<T>
+    public class TreeNode<T> 
     {
         private T data;
         public TreeNode<T> left;
@@ -41,6 +41,10 @@ namespace ClassLibrary.Tree
             }
         }
 
+       public static int operator +(TreeNode<T> i, int j)
+        {
+            return (dynamic)i.Value + j;
+        }
 
 
     }
@@ -154,7 +158,7 @@ namespace ClassLibrary.Tree
         }
 
         #region level order traver 
-        public void LevelorderTraversal(TreeNode<int> root)
+        public void LevelorderTraversal(TreeNode<T> root)
         {
             int h = getHeight(root);
 
@@ -165,9 +169,9 @@ namespace ClassLibrary.Tree
 
         }
 
-        private void printGivenLevel(TreeNode<int> root, int level)
+        private void printGivenLevel(TreeNode<T> root, int level)
         {
-            TreeNode<int> current = root;
+            TreeNode<T> current = root;
 
             if (current == null)
                 return;
@@ -238,13 +242,13 @@ namespace ClassLibrary.Tree
         //4.1 Implement a function to check if a binary tree is balanced. For the purposes of
         //this question, a balanced tree is defined to be a tree such that the heights of the
         //two subtrees of any node never differ by more than one.
-        public int getHeight(TreeNode<int> node)
+        public int getHeight(TreeNode<T> node)
         {
             if (node == null) return 0; // Base case
             return Math.Max(getHeight(node.left), getHeight(node.right)) + 1;
         }
 
-        public bool IsBalanced(TreeNode<int> node)
+        public bool IsBalanced(TreeNode<T> node)
         {
             if (node == null) return true; // Base case
             int heightDiff = getHeight(node.left) - getHeight(node.right);
@@ -700,15 +704,15 @@ namespace ClassLibrary.Tree
         // or end at the root or a leaf.
 
 
-        public void FindSum(TreeNode<int> current, int sum)
+        public void FindSum(TreeNode<T> current, int sum)
         {
             int depth = getHeight(current);
-            TreeNode<int>[] path = new TreeNode<int>[depth];
+            TreeNode<T>[] path = new TreeNode<T>[depth];
             FindSum(current, path, 0, sum);
 
         }
 
-        private void FindSum(TreeNode<int> current, TreeNode<int>[] path, int level, int sum)
+        private void FindSum(TreeNode<T> current, TreeNode<T>[] path, int level, int sum)
         {
             if (current == null) return;
 
@@ -719,7 +723,7 @@ namespace ClassLibrary.Tree
 
             for (int i = level; i >= 0; i--)
             {
-                t = path[i].Value + t;
+                t = path[i] + t;
                 if (t == sum)
                 {
                     printPath(path, i, level);
@@ -736,7 +740,7 @@ namespace ClassLibrary.Tree
 
         }
 
-        private void printPath(TreeNode<int>[] path, int start, int end)
+        private void printPath(TreeNode<T>[] path, int start, int end)
         {
             for (int i = start; i <= end; i++)
             {
@@ -1284,7 +1288,8 @@ namespace ClassLibrary.Tree
                 return 0;
             }
 
-            return (Math.Min(MinDepth2(root.left), MinDepth2(root.right)) + 1);
+          //  return (Math.Min(MinDepth2(root.left), MinDepth2(root.right)) + 1);
+            return (Math.Min(getHeight(root.left), getHeight(root.right)) + 1);
         }
         /*end soultion 2 */
         #endregion 
