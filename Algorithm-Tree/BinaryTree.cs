@@ -4,12 +4,26 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 
 namespace ClassLibrary.Tree
 {
+    public class MyNode<T>
+    {
+        public T Value;
+        public MyNode<T> next;
 
-    public class TreeNode<T> 
+        public MyNode(T v)
+        {
+            Value = v;
+
+        }
+
+    }
+
+
+    public class TreeNode<T>
     {
         private T data;
         public TreeNode<T> left;
@@ -37,17 +51,33 @@ namespace ClassLibrary.Tree
             set
             {
                 data = value;
-                
+
             }
         }
 
-       public static int operator +(TreeNode<T> i, int j)
+        public static int operator +(TreeNode<T> i, int j)
         {
             return (dynamic)i.Value + j;
         }
 
+        public static int operator +(TreeNode<T> i, TreeNode<T> j)
+        {
+            return (dynamic)i.Value + (dynamic)j.Value;
+        }
+        public static int operator +(TreeNode<T> i, T j)
+        {
+            return (dynamic)i.Value + (dynamic)j;
+        }
+
+        public static int operator *(TreeNode<T> i, int j)
+        {
+            return (dynamic)i.Value * j; ;
+        }
 
     }
+
+
+
     public class BinaryTree<T> : IEnumerable<TreeNode<T>> where T : IComparable<T>
     {
         public IEnumerator<TreeNode<T>> GetEnumerator()
@@ -60,13 +90,22 @@ namespace ClassLibrary.Tree
             throw new NotImplementedException();
         }
 
+        public BinaryTree(IEnumerable<T> data)
+        {
+            if (data == null)
+            {
+                return;
+            }
+            foreach (T item in data)
+            {
+                Add(item);
+            }
 
+        }
 
         public TreeNode<T> root;
 
         private Queue<TreeNode<T>> TreeRecords = new Queue<TreeNode<T>>();
-
-
 
         public void InorderTraversal(TreeNode<T> current)
         {
@@ -116,7 +155,6 @@ namespace ClassLibrary.Tree
 
         }
 
-
         public void PreorderTraversal(TreeNode<T> current)
         {
             if (current != null)
@@ -157,8 +195,9 @@ namespace ClassLibrary.Tree
 
         }
 
-        #region level order traver 
-        public void LevelorderTraversal(TreeNode<T> root)
+        #region Level Order Traversal
+        /*without queue*/
+        public void LevelOrderTraversal(TreeNode<T> root)
         {
             int h = getHeight(root);
 
@@ -187,10 +226,41 @@ namespace ClassLibrary.Tree
             }
 
         }
+
+        public void LevelOrderTraversalII(TreeNode<T> root)
+        {
+            if (root == null)
+            {
+                return;
+            }
+
+            Queue<TreeNode<T>> visited = new Queue<TreeNode<T>>();
+            visited.Enqueue(root);
+
+            while (visited.Count > 0)
+            {
+                TreeNode<T> node = visited.Dequeue();
+                Debug.Print(node.Value.ToString());
+                if (node.left != null)
+                {
+                    visited.Enqueue(node.left);
+                }
+
+                if (node.right != null)
+                {
+                    visited.Enqueue(node.right);
+                }
+
+
+
+            }
+
+        }
+
         #endregion
 
         // create binary tree for testing 
-        public void Add(T data)
+        private void Add(T data)
         {
 
             TreeNode<T> current = new TreeNode<T>(data);
@@ -214,7 +284,7 @@ namespace ClassLibrary.Tree
                         TreeRecords.Dequeue();
                         TreeRecords.Enqueue(node.left);
                         TreeRecords.Enqueue(node.right);
-                        node = TreeRecords.Peek();
+                        //node = TreeRecords.Peek();
 
                     }
 
@@ -724,7 +794,7 @@ namespace ClassLibrary.Tree
             for (int i = level; i >= 0; i--)
             {
                 t = path[i] + t;
-                if (t == sum)
+                if (t.CompareTo(sum) == 0)
                 {
                     printPath(path, i, level);
 
@@ -768,13 +838,13 @@ namespace ClassLibrary.Tree
         /*
             I try to use the way similar with perorder or inorder travel tree, It seems does`t work for this problem
          */
-        int SumNumbers(TreeNode<int> root)
+        public int SumNumbers(TreeNode<T> root)
         {
             int n = 0;
             int level = 0;
             bool done = false;
-            TreeNode<int> current = root;
-            Stack<TreeNode<int>> temp = new Stack<TreeNode<int>>();
+            TreeNode<T> current = root;
+            Stack<TreeNode<T>> temp = new Stack<TreeNode<T>>();
             int result = 0;
             while (done == false)
             {
@@ -793,16 +863,16 @@ namespace ClassLibrary.Tree
                 else
                 {
                     level = level + 1;
-                    TreeNode<int> node = temp.Pop();
+                    TreeNode<T> node = temp.Pop();
                     if (node.right != null)
                     {
-                        result = result + (node.left.Value + node.right.Value + n) % 10 * level;
-                        n = node.left.Value + node.right.Value > 10 ? 1 : 0;
+                        result = result + (node.left + node.right + n) % 10 * level;
+                        n = node.left + node.right > 10 ? 1 : 0;
                         node = node.right;
                     }
                     else
                     {
-                        result = result + (node.left.Value + n) * level;
+                        result = result + (node.left + n) * level;
                     }
 
 
@@ -813,7 +883,7 @@ namespace ClassLibrary.Tree
 
             if (root != null)
             {
-                result = root.Value * level + result;
+                result = root * level + result;
 
             }
             return result;
@@ -842,14 +912,14 @@ namespace ClassLibrary.Tree
 
         public int SumNumbers2(TreeNode<int> root)
         {
-            
+
             return dfs(root, 0);
         }
 
         /*end solution 2*/
 
         /*solution 3  deap first while loop*/
-       
+
         /**/
 
         #endregion
@@ -866,12 +936,12 @@ namespace ClassLibrary.Tree
      2   3
      Given the below binary tree, */
         /*solution 2*/
-      private  int MaxPathSum2Help(TreeNode<int> root, int max)
+        private int MaxPathSum2Help(TreeNode<int> root, ref int max)
         {
             if (root == null) return 0;
 
-            int l = MaxPathSum2Help(root.left, max);
-            int r = MaxPathSum2Help(root.right, max);
+            int l = MaxPathSum2Help(root.left, ref max);
+            int r = MaxPathSum2Help(root.right, ref max);
 
             int m = root.Value;
 
@@ -883,11 +953,11 @@ namespace ClassLibrary.Tree
             return (Math.Max(l, r) > 0 ? Math.Max(l, r) + root.Value : root.Value);
         }
 
-     public int maxPathSum2(TreeNode<int> root)
+        public int maxPathSum2(TreeNode<int> root)
         {
             int max = int.MinValue;
 
-            MaxPathSum2Help(root, max);
+            MaxPathSum2Help(root, ref max);
 
             return max;
         }
@@ -911,7 +981,7 @@ namespace ClassLibrary.Tree
             // recursively get sum of left and right path
             int left = Math.Max(findMax(node.left), 0);
             int right = Math.Max(findMax(node.right), 0);
-             
+
             //update maximum here
             max = Math.Max(node.Value + left + right, max);
 
@@ -920,6 +990,35 @@ namespace ClassLibrary.Tree
         }
 
         /*solution 1*/
+
+        /*solution from me  8/14*/
+        public int maxPathSum3(TreeNode<int> root)
+        {
+            int max = int.MinValue;
+
+            MaxPathSum3Help(root, ref max, 0);
+
+            return max;
+        }
+
+        private void MaxPathSum3Help(TreeNode<int> root, ref int max, int sum)
+        {
+            if (root != null)
+            {
+                sum = sum + root.Value;
+
+                if (max < sum)
+                {
+                    max = sum;
+                }
+
+                MaxPathSum3Help(root.left, ref max, sum);
+                MaxPathSum3Help(root.right, ref max, sum);
+
+            }
+
+        }
+
         #endregion
 
         #region Populating Next Right Pointers in Each Node
@@ -952,7 +1051,7 @@ namespace ClassLibrary.Tree
          
          */
 
-       
+        /*since the question require constanct memeory space, so we cannot use queue */
 
         public void Connect(TreeNode<T> root)
         {
@@ -984,6 +1083,7 @@ namespace ClassLibrary.Tree
                 TreeNode<T> q = null; // the next valid pointer in the level+1 , or NULL if not found
                 while (p != null)
                 { //find the next valid child of root node
+                    //
                     if (p.left != null) { q = p.left; break; }
                     if (p.right != null) { q = p.right; break; }
                     p = p.next;
@@ -996,6 +1096,8 @@ namespace ClassLibrary.Tree
             Dfs(root.right); // search right child, order is important
             Dfs(root.left);  // search left child
         }
+
+
 
 
         #endregion
@@ -1060,11 +1162,7 @@ namespace ClassLibrary.Tree
             }
         }
 
-        public void Connect2(TreeNode<T> root)
-        {
 
-
-        }
         #endregion
 
         #region Flatten Binary Tree to Linked List
@@ -1081,22 +1179,10 @@ namespace ClassLibrary.Tree
                  3   4   6
             The flattened tree should look like:
 
-               1
-                \
-                 2
-                  \
-                   3
-                    \
-                     4
-                      \
-                       5
-                        \
-                         6
-
-                   
+               1->2->3->4->5->6                   
              */
         /*not correct */
-        public void Flatten(TreeNode<T> treeNode, ref TreeNode<T> n)
+        public void Flatten(TreeNode<T> treeNode, ref MyNode<T> n)
         {
             if (treeNode == null)
             {
@@ -1107,81 +1193,86 @@ namespace ClassLibrary.Tree
             //{
             //    n = new TreeNode<T>();
             //}
-            n = new TreeNode<T>(treeNode.Value);
+            n = new MyNode<T>(treeNode.Value);
 
-            
-                Flatten(treeNode.left, ref n.left);
-           
-           
 
-                Flatten(treeNode.right, ref n.left);
-            
+            Flatten(treeNode.left, ref n.next);
+
+            Flatten(treeNode.right, ref n.next);
+
         }
 
-        public void FlattenBSF(TreeNode<T> treeNode,  ref TreeNode<T> n)
+        public void FlattenBSF(TreeNode<T> treeNode, ref MyNode<T> n)
         {
-            Queue<TreeNode<T>> currentQ = new Queue<TreeNode<T>>();
-            
-        
-            currentQ.Enqueue(treeNode);
-            TreeNode<T> temp = n;
-
-            while(currentQ.Count !=0)
+            if (treeNode == null)
             {
-                TreeNode<T> current = currentQ.Dequeue();
+                return;
+            }
+
+            Stack<TreeNode<T>> currentQ = new Stack<TreeNode<T>>();
+            currentQ.Push(treeNode);
+            MyNode<T> temp = n;
+
+
+            while (currentQ.Count > 0)
+            {
+                TreeNode<T> current = currentQ.Pop();
                 if (current != null)
                 {
 
-                    currentQ.Enqueue(current.left);
-                    currentQ.Enqueue(current.right);
-
                     if (n == null)
                     {
-                        n = new TreeNode<T>(current.Value);
+                        n = new MyNode<T>(current.Value);
 
                         temp = n;
                     }
                     else
                     {
-                        while (temp.left != null)
+                        while (temp.next != null)
                         {
-                            temp = temp.left;
+                            temp = temp.next;
                         }
-                        temp.left = new TreeNode<T>(current.Value);
+                        temp.next = new MyNode<T>(current.Value);
                     }
+
+                    currentQ.Push(current.right);
+                    currentQ.Push(current.left);
+
+
                 }
 
-                
-            
+
+
             }
 
 
-        
+
         }
         #endregion
 
         #region Path Sum I
-            //        Path Sum I:
+        //        Path Sum I:
 
-            //Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
-            //For example:
-            //Given the below binary tree and sum = 22,
-            //              5
-            //             / \
-            //            4   8
-            //           /   / \
-            //          11  13  4
-            //         /  \      \
-            //        7    2      1
-            //return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
+        //Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
+        //For example:
+        //Given the below binary tree and sum = 22,
+        //              5
+        //             / \
+        //            4   8
+        //           /   / \
+        //          11  13  4
+        //         /  \      \
+        //        7    2      1
+        //return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
 
         bool HasPathSum(TreeNode<int> root, int sum)
         {
-            if (root == null) {
+            if (root == null)
+            {
                 return false;
             }
 
-            if (root.right == null && root.left == null && sum-root.Value == 0)
+            if (root.right == null && root.left == null && sum - root.Value == 0)
             {
                 return true;
             }
@@ -1189,6 +1280,7 @@ namespace ClassLibrary.Tree
 
         }
         #endregion
+
         #region Path Sum II
 
         /*
@@ -1213,11 +1305,11 @@ namespace ClassLibrary.Tree
             ] 
              */
 
-      public List<Stack<int>> PathSum2(TreeNode<int> root, int sum)
+        public List<Stack<int>> PathSum2(TreeNode<int> root, int sum)
         {
             List<Stack<int>> result = new List<Stack<int>>();
             Stack<int> temp = new Stack<int>();
-            PathSum2Help(root, sum, temp, result); 
+            PathSum2Help(root, sum, temp, result);
             return result;
         }
 
@@ -1229,22 +1321,23 @@ namespace ClassLibrary.Tree
             }
 
             temp.Push(root.Value);
-            if (root.left == null && root.right == null && sum-root.Value == 0)
+            if (root.left == null && root.right == null && sum - root.Value == 0)
             {
                 result.Add(new Stack<int>(temp));
                 temp.Pop();
-                
+
             }
 
-           
-                PathSum2Help(root.right, sum - root.Value, temp, result);
-                PathSum2Help(root.left, sum - root.Value, temp, result);
-         
-            
-                   // temp.Pop();
+
+            PathSum2Help(root.right, sum - root.Value, temp, result);
+            PathSum2Help(root.left, sum - root.Value, temp, result);
+
+
+            // temp.Pop();
         }
 
         #endregion
+
         #region Minimum Depth of Binary Tree
         public int MinDepth(TreeNode<T> root)
         {
@@ -1254,7 +1347,8 @@ namespace ClassLibrary.Tree
                 MinDepthHelper(root, min, 0);
                 return min;
             }
-            else {
+            else
+            {
 
                 return 0;
             }
@@ -1266,18 +1360,18 @@ namespace ClassLibrary.Tree
             {
                 return;
             }
-           
+
             if (root.right == null && root.left == null)
             {
-                if (min > height )
+                if (min > height)
                 {
-                    min = height;     
+                    min = height;
                 }
             }
 
-            MinDepthHelper(root.left, min, height+1);
+            MinDepthHelper(root.left, min, height + 1);
             MinDepthHelper(root.right, min, height + 1);
-        
+
         }
 
         /*solution 2*/
@@ -1288,14 +1382,156 @@ namespace ClassLibrary.Tree
                 return 0;
             }
 
-          //  return (Math.Min(MinDepth2(root.left), MinDepth2(root.right)) + 1);
-            return (Math.Min(getHeight(root.left), getHeight(root.right)) + 1);
+            return (Math.Min(MinDepth2(root.left), MinDepth2(root.right)) + 1);
+            //  return (Math.Min(getHeight(root.left), getHeight(root.right)) + 1);
         }
         /*end soultion 2 */
-        #endregion 
-        
-       
+        #endregion
 
+        #region Convert sorted list to binary search tree
+        public void CovertBTree(LinkedList<T> n, ref TreeNode<T> head)
+        {
+            if (n == null)
+            {
+                return;
+            }
+
+
+            Stack<LinkedListNode<T>> s = new Stack<LinkedListNode<T>>();
+            LinkedListNode<T> node = n.First;
+            int length = n.Count;
+
+            for (int i = 0; i < length / 2; i++)
+            {
+                s.Push(node);
+                node = node.Next;
+            }
+
+            // sighn the
+            head = new TreeNode<T>(node.Value);
+            TreeNode<T> h = head;
+            node = node.Next;
+
+            while (node != null)
+            {
+                h.right = new TreeNode<T>(node.Value);
+                h = h.right;
+                node = node.Next;
+            }
+
+            // go back head again 
+            h = head;
+
+            while (s.Count > 0)
+            {
+                LinkedListNode<T> temp = s.Pop();
+                h.left = new TreeNode<T>(temp.Value);
+                h = h.left;
+
+            }
+
+
+        }
+
+        public void CovertBTreeII(LinkedList<T> n, ref TreeNode<T> head)
+        {
+            int length = n.Count;
+            CovertBTreeIIhelper(n, ref head, 0, length);
+
+        }
+
+        private void CovertBTreeIIhelper(LinkedList<T> n, ref TreeNode<T> head, int first, int last)
+        {
+            if (first <= last)
+            {
+                int mid = (first + last) / 2;
+                head = new TreeNode<T>(n.ElementAtOrDefault<T>(mid));
+
+                CovertBTreeIIhelper(n, ref head.left, first, mid - 1);
+                CovertBTreeIIhelper(n, ref head.right, mid + 1, last);
+            }
+        }
+
+        #endregion
+
+        #region Binary Tree Level Order Traversal II
+        //        Given a binary tree, return the bottom-up level order traversal of its nodes' values. (ie, from left to right, level by level from leaf to root).
+
+        //For example:
+        //Given binary tree {3,9,20,#,#,15,7},
+        //    3
+        //   / \
+        //  9  20
+        //    /  \
+        //   15   7
+        //return its bottom-up level order traversal as:
+        //[
+        //  [15,7]
+        //  [9,20],
+        //  [3],
+        //]
+
+        public List<Queue<TreeNode<T>>> LevelOrderTraversalIII(TreeNode<T> root)
+        {
+            if (root == null)
+            {
+                return null;
+            }
+
+            
+            List<Queue<TreeNode<T>>> result = new List<Queue<TreeNode<T>>>();
+            Queue<TreeNode<T>> solution = new Queue<TreeNode<T>>();
+            Queue<TreeNode<T>> temp = new Queue<TreeNode<T>>();
+            solution.Enqueue(root);
+
+
+            while (true)
+            {
+                result.Add(new Queue<TreeNode<T>>(solution));
+
+
+                while (solution.Count > 0)
+                {
+
+                    TreeNode<T> node = solution.Dequeue();
+
+                    if (node.left != null)
+                    {
+                        temp.Enqueue(node.left);
+                    }
+
+                    if (node.right != null)
+                    {
+                        temp.Enqueue(node.right);
+                    }
+                    }
+
+                if (temp.Count ==0)
+                {
+                    break;
+                }
+        else{
+            solution = new Queue<TreeNode<T>>(temp);
+            temp.Clear();
+	}
+            }
+
+            return result;
+
+        }
+        #endregion
+
+        #region Construct Binary Tree from inorder and postorder Traversal
+        /*Given inorder and postorder traversal of a tree, construct the binary tree.*/
+        /*in-order:   4 2 5  (1)  6 7 3 8*/
+        public void Construct(TreeNode<T> head, int[] data)
+        { 
+        
+        
+        
+        }
+
+        #endregion
     }
 
 }

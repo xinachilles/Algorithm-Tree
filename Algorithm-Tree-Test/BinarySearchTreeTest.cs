@@ -72,7 +72,7 @@ namespace Algorithm_Tree_Test
         [DeploymentItem("Algorithm-Tree.dll")]
         public void InorderSuccTest()
         {
-            BinarySearchTree_Accessor<int> target = new BinarySearchTree_Accessor<int>(); // TODO: Initialize to an appropriate value
+            BinarySearchTree<int> target = new BinarySearchTree<int>(); // TODO: Initialize to an appropriate value
             target.root = new TreeNode<int>(0);
 
             target.root.left = new TreeNode<int>(1);
@@ -145,6 +145,29 @@ namespace Algorithm_Tree_Test
         public void SortedListToBSTTest()
         {
             SortedListToBSTTestHelper<int>();
+        }
+
+        /// <summary>
+        ///A test for IsBinarySearchTree
+        ///</summary>
+        public void IsBinarySearchTreeTestHelper<T>()
+            where T : IComparable<T>
+        {
+            
+            BinarySearchTree<T> target = new BinarySearchTree<T>(); // TODO: Initialize to an appropriate value
+            TreeNode<T> head = null; // TODO: Initialize to an appropriate value
+            bool expected = false; // TODO: Initialize to an appropriate value
+            bool actual;
+            actual = target.IsBinarySearchTree(head);
+            Assert.AreEqual(expected, actual);
+            Assert.Inconclusive("Verify the correctness of this test method.");
+        }
+
+        [TestMethod()]
+        public void IsBinarySearchTreeTest()
+        {
+            Assert.Inconclusive("No appropriate type parameter is found to satisfies the type constraint(s) of T. " +
+                    "Please call IsBinarySearchTreeTestHelper<T>() with appropriate type parameters.");
         }
     }
 }

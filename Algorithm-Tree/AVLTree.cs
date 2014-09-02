@@ -127,7 +127,7 @@ namespace ClassLibrary.Tree
         }
 
         public new void Insert(T data) {
-        TreeNode<T> n = base.Insert(data);
+        TreeNode<T> n = base.Add(data);
         Rebalance(n);
         
         }
