@@ -284,7 +284,7 @@ namespace ClassLibrary.Tree
                         TreeRecords.Dequeue();
                         TreeRecords.Enqueue(node.left);
                         TreeRecords.Enqueue(node.right);
-                        //node = TreeRecords.Peek();
+                        node = TreeRecords.Peek();
 
                     }
 
@@ -548,12 +548,12 @@ namespace ClassLibrary.Tree
 
         public bool CheckBST(TreeNode<int> node, int min, int max)
         {
-            if (root == null) return true;
+            if (node == null) return true;
 
             // check current value 
             if (node.Value > max || node.Value <= min) { return false; }
 
-            if (!CheckBST(node.left, min, node.Value) || !CheckBST(node.right, node.Value, min))
+            if (!CheckBST(node.left, min, node.Value) || !CheckBST(node.right, node.Value, max))
             {
                 return false;
 

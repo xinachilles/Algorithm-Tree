@@ -12,9 +12,20 @@ namespace ClassLibrary.Tree
     {
 
         public TreeNode<T> root;
-        private int count;
+       // private int count;
   
-       
+       public BinarySearchTree(IEnumerable<T> data)
+    {
+        if (data ==null)
+        {
+            return;
+        }
+           foreach (T item in data)
+        {
+            Add(item);
+        }
+    
+    }
 
 
        
@@ -60,7 +71,7 @@ namespace ClassLibrary.Tree
         }
 
 
-        public TreeNode<T> Add(T data)
+        private TreeNode<T> Add(T data)
         {
             // create a new Node instance
             TreeNode<T> n = new TreeNode<T>(data);
@@ -91,7 +102,7 @@ namespace ClassLibrary.Tree
             }
 
             // We're ready to add the node!
-            count++;
+           // count++;
             if (parent == null)
             {
                 // the tree was empty, make n the root
@@ -276,6 +287,12 @@ namespace ClassLibrary.Tree
                 */
         public bool IsBinarySearchTree(TreeNode<T> head)
         {
+            bool IsBt = true;
+            IsBinarySearchTreeHelper(head, ref IsBt);
+            return IsBt;
+        }
+        public void IsBinarySearchTreeHelper(TreeNode<T> head, ref bool IsBt)
+        {
             if (head != null)
             {
                 IsBinarySearchTree(head.left);
@@ -284,28 +301,23 @@ namespace ClassLibrary.Tree
                 {
                     if (head.left.Value.CompareTo(head.Value) > 0)
                     {
-                        return false;
+                        IsBt = false;
                     }
                 }
                     if (head.right != null)
                     {
                         if (head.right.Value.CompareTo(head.Value) < 0)
                         {
-                            return false;
+                            IsBt = false;
                         }
-                        IsBinarySearchTree(head.right);
-                       
-
-
+                        
                     }
 
               IsBinarySearchTree(head.right);        
                
             }
 
-                return true;
-
-
+             
 
             }
         #endregion

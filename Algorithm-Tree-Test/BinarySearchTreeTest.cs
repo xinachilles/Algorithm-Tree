@@ -72,7 +72,7 @@ namespace Algorithm_Tree_Test
         [DeploymentItem("Algorithm-Tree.dll")]
         public void InorderSuccTest()
         {
-            BinarySearchTree<int> target = new BinarySearchTree<int>(); // TODO: Initialize to an appropriate value
+            BinarySearchTree<int> target = new BinarySearchTree<int>(null); // TODO: Initialize to an appropriate value
             target.root = new TreeNode<int>(0);
 
             target.root.left = new TreeNode<int>(1);
@@ -112,8 +112,9 @@ namespace Algorithm_Tree_Test
         [TestMethod()]
         public void CreateMinimalBSTTest()
         {
-            BinarySearchTree<int> target = new BinarySearchTree<int>(); // TODO: Initialize to an appropriate value
             int[] arrj = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+            BinarySearchTree<int> target = new BinarySearchTree<int>((IEnumerable<int>)arrj); // TODO: Initialize to an appropriate value
+           
             int start = 0; // TODO: Initialize to an appropriate value
             int end = 8; // TODO: Initialize to an appropriate value
             TreeNode<int> expected = null; // TODO: Initialize to an appropriate value
@@ -129,8 +130,9 @@ namespace Algorithm_Tree_Test
         public void SortedListToBSTTestHelper<T>()
             where T : IComparable<T>
         {
-            BinarySearchTree<T> target = new BinarySearchTree<T>(); // TODO: Initialize to an appropriate value
             int[] temp_array = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            BinarySearchTree<int> target = new BinarySearchTree<int>((IEnumerable<int>)temp_array); // TODO: Initialize to an appropriate value
+          
 
             LinkedList<int> head = new LinkedList<int>(temp_array);
 
@@ -147,27 +149,6 @@ namespace Algorithm_Tree_Test
             SortedListToBSTTestHelper<int>();
         }
 
-        /// <summary>
-        ///A test for IsBinarySearchTree
-        ///</summary>
-        public void IsBinarySearchTreeTestHelper<T>()
-            where T : IComparable<T>
-        {
-            
-            BinarySearchTree<T> target = new BinarySearchTree<T>(); // TODO: Initialize to an appropriate value
-            TreeNode<T> head = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
-            bool actual;
-            actual = target.IsBinarySearchTree(head);
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [TestMethod()]
-        public void IsBinarySearchTreeTest()
-        {
-            Assert.Inconclusive("No appropriate type parameter is found to satisfies the type constraint(s) of T. " +
-                    "Please call IsBinarySearchTreeTestHelper<T>() with appropriate type parameters.");
-        }
+     
     }
 }

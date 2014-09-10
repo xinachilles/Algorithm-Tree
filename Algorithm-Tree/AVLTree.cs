@@ -9,7 +9,7 @@ namespace ClassLibrary.Tree
     
 
 
-    public class AVLTree<T> : BinarySearchTree<T> where T:IComparable<T>
+    public class AVLTree<T>  where T:IComparable<T>
     {
         private new TreeNode<T> root =null;
 
@@ -126,10 +126,6 @@ namespace ClassLibrary.Tree
             }
         }
 
-        public new void Insert(T data) {
-        TreeNode<T> n = base.Add(data);
-        Rebalance(n);
-        
-        }
+       
     }
 }
